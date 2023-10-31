@@ -4,6 +4,7 @@ import pyttsx3  # text to speech
 import webbrowser
 import wikipedia
 import wolframalpha
+import openai
 
 # Initialize Text to Speech engine object
 engine = pyttsx3.init()
@@ -18,7 +19,7 @@ voices = engine.getProperty('voices')
 
 engine.setProperty('voice', voices[1].id)
 
-activationWord = 'june'
+activationWord = 'computer'
 
 # Configure browser by setting the path
 chrome_path = r"C:\Program Files\Google\Chrome\Application\chrome.exe"
@@ -27,6 +28,9 @@ webbrowser.register("chrome", None, webbrowser.BackgroundBrowser(chrome_path))
 # wolfram alpha init
 app_id = "YQXAW9-ETRQGL8Q9L"
 wolframClient = wolframalpha.Client(app_id)
+
+# openAI api key
+openai.api_key = "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"
 
 # convert text to speech
 def speak(text, rate = 150):
@@ -100,6 +104,13 @@ def search_wolfram(query=""):
             speak("Computation failed. Now, quering the universal database.")
             search_wiki(question)
 
+# chat with chapGPT
+def chat_gpt(query="", model="gpt-3.5-turbo"):
+    messages = [{"role": "user", "content": query}]
+    response = openai.ChatCompletion.create(model=model,messages=messages)
+    print(response.choices[0].message.content)
+    return response.choices[0].message["content"] 
+
 
 # main loop
 if __name__ == "__main__":
@@ -128,7 +139,7 @@ if __name__ == "__main__":
             # access wikipedia
             if query[0]== "wikipedia":
                 query=" ".join(query[1:])
-                speak("Quesrying the universal databank.") 
+                speak("Querying the universal databank.") 
                 speak(search_wiki(query))
 
             # wolfram Alpha
@@ -139,7 +150,17 @@ if __name__ == "__main__":
                     result = search_wolfram(query)
                     speak(result)
                 except:
-                    speak("Unable to compute.")    
+                    speak("Unable to compute.")   
+
+            # chat gpt
+            if query[0] == "chat" and query[1] == "gpt":
+                query = " ".join(query[2:])
+                speak("Querying from GPT...")
+                try:
+                    gpt_response = chat_gpt(query)
+                    speak(gpt_response)
+                except:
+                    speak("Unable to connect to GPT")    
 
             # Take notes
             if query[0]=="log":

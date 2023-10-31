@@ -27,6 +27,8 @@ pip install wolframalpha
 
 pip install pygame
 
+pip install openai
+
 ## Usage
 To use the AI assistant run the main Pythin Script: 
 ```
@@ -43,6 +45,8 @@ This project utilizes the following Python libraries and modules to achieve its 
 **SpeechRecognition**: This library is used to convert speech into text, enabling voice input for the assistant.
 
 **Pyttsx3**: Pyttsx3 is used for text-to-speech conversion, allowing the assistant to respond with spoken language.
+
+**Open AI**: Integrated with CHAT GPT to have a more user friendly conversational response. 
 
 **Wikipedia**: The Wikipedia module enables the assistant to search and retrieve information from the Wikipedia online encyclopedia.
 
